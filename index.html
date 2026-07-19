@@ -64,37 +64,54 @@ updateClock();
 </script>
 </body>
 <!DOCTYPE html>
-<script>
-const sessions = [
-        { id: "val-06pm", time: 18, result: "13" },
-        { id: "val-08pm", time: 20, result: "--" },
-        { id: "val-09pm", time: 21, result: "--" },
-        { id: "val-10pm", time: 22, result: "--" },
-        { id: "val-11pm", time: 23, result: "--" }
-    ];
+<html>
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-4">
 
-    function updateDisplay() {
-        const now = new Date();
-        const clockEl = document.getElementById("live-clock");
+    <!-- ဒီနေရာမှာ သင်ပြချင်တဲ့ စာသားတွေနဲ့ ID တွေ ထည့်ရပါမယ် -->
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow">
+        <h1 class="text-xl font-bold mb-4">BerBer 2D</h1>
         
-        if (clockEl) {
-            clockEl.innerText = now.toLocaleTimeString('en-US', { hour12: true });
+        <!-- အချိန်ပြရန် -->
+        <p id="live-clock" class="text-lg font-bold mb-4"></p>
+
+        <!-- ရလဒ်ပြရန် (ဒီ ID တွေက JS ထဲက id နဲ့ တူရမယ်) -->
+        <div class="space-y-2">
+            <p>06:00 PM: <span id="val-06pm">--</span></p>
+            <p>08:00 PM: <span id="val-08pm">--</span></p>
+            <p>09:00 PM: <span id="val-09pm">--</span></p>
+            <p>10:00 PM: <span id="val-10pm">--</span></p>
+            <p>11:00 PM: <span id="val-11pm">--</span></p>
+        </div>
+    </div>
+
+    <!-- JavaScript ကို အောက်ဆုံးမှာ ထားပါ -->
+    <script>
+        const sessions = [
+            { id: "val-06pm", time: 18, result: "13" },
+            { id: "val-08pm", time: 20, result: "--" },
+            { id: "val-09pm", time: 21, result: "--" },
+            { id: "val-10pm", time: 22, result: "--" },
+            { id: "val-11pm", time: 23, result: "--" }
+        ];
+
+        function updateDisplay() {
+            const now = new Date();
+            const clockEl = document.getElementById("live-clock");
+            if (clockEl) clockEl.innerText = now.toLocaleTimeString();
+
+            const currentHour = now.getHours();
+            sessions.forEach(s => {
+                const el = document.getElementById(s.id);
+                if (el && currentHour >= s.time) {
+                    el.innerText = s.result;
+                }
+            });
         }
-
-        const currentHour = now.getHours();
-        const mainEl = document.getElementById("main-live-result");
-
-        sessions.forEach(s => {
-            const el = document.getElementById(s.id);
-            if (el && currentHour >= s.time) {
-                el.innerText = s.result;
-            }
-            if (mainEl && currentHour === s.time) {
-                mainEl.innerText = s.result;
-            }
-        });
-    }
-
-    setInterval(updateDisplay, 1000);
-    updateDisplay();
-<script></h1>
+        setInterval(updateDisplay, 1000);
+        updateDisplay();
+    </script>
+</body>
+</html>
