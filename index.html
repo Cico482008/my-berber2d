@@ -1,120 +1,83 @@
-<h1><script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100">
 
 <div class="w-full max-w-md mx-auto bg-white min-h-screen shadow-lg pb-10">
-<!-- Header -->
-<div class="bg-purple-600 p-4 text-white flex justify-between items-center">
-<h1 class="font-bold text-lg">BerBer 2D</h1>
-    <div class="flex gap-4"><span>🎁</span><span>🗓️
-</span></div>
-</div>
+    <!-- Header -->
+    <div class="bg-purple-600 p-4 text-white flex justify-between items-center">
+        <h1 class="font-bold text-lg">BerBer 2D</h1>
+        <div class="flex gap-4"><span>🎁</span><span>📅</span></div>
+    </div>
 
-<!-- Live Result Section -->
-<div class="text-center py-6 border-b">
-<p class="text-red-500 font-bold animate-pulse">● LIVE</p>
-    <p id="main-live-result" class="text-4xl font-bold my-2">--</p>
-<div class="flex justify-around mt-4 text-gray-700">
-<div class="text-center">
-<p class="text-xs text-gray-500 underline">Set</p>
-<p class="font-bold">12345.56</p>
-</div>
-<div class="text-center">
-<p id="live-clock" class="text-xs text-gray-500 underline">00:00:00</p>
-<p class="font-bold">2026:07:19</p>
-</div>
-<div class="text-center">
-<p class="text-xs text-gray-500 underline">Value</p>
-<p class="font-bold">12345.56</p>
-</div>
-</div>
-</div>
+    <!-- Live Result Section -->
+    <div class="text-center py-6 border-b">
+        <p class="text-red-500 font-bold animate-pulse">● LIVE</p>
+        <p id="main-live-result" class="text-4xl font-bold my-2">--</p>
+        <div class="flex justify-around mt-4 text-gray-700">
+            <div class="text-center">
+                <p class="text-xs text-gray-500 underline">Time</p>
+                <p id="live-clock" class="font-bold">00:00:00</p>
+            </div>
+        </div>
+    </div>
 
-<!-- History Section -->
-<div class="flex flex-col gap-2 px-4 mt-6">
-<div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
-<span class="font-bold text-sm">06:00 PM</span>
-<span id="val-06pm" class="font-bold text-lg">--</span>
-</div>
-<div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
-<span class="font-bold text-sm">08:00 PM</span>
-<span id="val-08pm" class="font-bold text-lg">--</span>
-</div>
-<div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
-<span class="font-bold text-sm">09:00 PM</span>
-<span id="val-09pm" class="font-bold text-lg">--</span>
-</div>
-<div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
-<span class="font-bold text-sm">10:00 PM</span>
-<span id="val-10pm" class="font-bold text-lg">--</span>
-</div>
-<div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
-<span class="font-bold text-sm">11:00 PM</span>
-<span id="val-11pm" class="font-bold text-lg">--</span>
-</div>
-</div>
+    <!-- History Section -->
+    <div class="flex flex-col gap-2 px-4 mt-6">
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">06:00 PM</span>
+            <span id="val-06pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">08:00 PM</span>
+            <span id="val-08pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">09:00 PM</span>
+            <span id="val-09pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">10:00 PM</span>
+            <span id="val-10pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">11:00 PM</span>
+            <span id="val-11pm" class="font-bold text-lg">--</span>
+        </div>
+    </div>
 </div>
 
 <script>
-function updateClock() {
-const now = new Date();
-const timeString = now.toLocaleTimeString('en-US', { hour12: true });
-document.getElementById('live-clock').innerText = timeString;
-}
-setInterval(updateClock, 1000);
-updateClock();
-</script>
-</body>
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-4">
-
-    <!-- ဒီနေရာမှာ သင်ပြချင်တဲ့ စာသားတွေနဲ့ ID တွေ ထည့်ရပါမယ် -->
-    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow">
-        <h1 class="text-xl font-bold mb-4">BerBer 2D</h1>
-        
-        <!-- အချိန်ပြရန် -->
-        <p id="live-clock" class="text-lg font-bold mb-4"></p>
-
-        <!-- ရလဒ်ပြရန် (ဒီ ID တွေက JS ထဲက id နဲ့ တူရမယ်) -->
-        <div class="space-y-2">
-            <p>06:00 PM: <span id="val-06pm">--</span></p>
-            <p>08:00 PM: <span id="val-08pm">--</span></p>
-            <p>09:00 PM: <span id="val-09pm">--</span></p>
-            <p>10:00 PM: <span id="val-10pm">--</span></p>
-            <p>11:00 PM: <span id="val-11pm">--</span></p>
-        </div>
-    </div>
-<!-- JavaScript ကို အောက်ဆုံးမှာ ထားပါ -->
-    <script>
-        const sessions = [
-            { id: "val-06pm", time: 18, result: "13" },
-            { id: "val-08pm", time: 20, result: "00" },
-            { id: "val-09pm", time: 21, result: "--" },
-            { id: "val-10pm", time: 22, result: "--" },
-            { id: "val-11pm", time: 23, result: "--" }
-        ];
 function updateDisplay() {
-            const now = new Date();
-            const clockEl = document.getElementById("live-clock");
-            if (clockEl) clockEl.innerText = now.toLocaleTimeString();
+    const now = new Date();
+    const clockEl = document.getElementById("live-clock");
+    if (clockEl) clockEl.innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
-            const currentHour = now.getHours();
-                        let lastResult = "--";
-            sessions.forEach(s => {
-                const el = document.getElementById(s.id);
-                if (el && currentHour >= s.time) {
-                    el.innerText = s.result;
-                    lastResult = s.result;
-                }
-            });
-            const mainEl = document.getElementById("main-live-result");
-            if (mainEl) mainEl.innerText = lastResult;
+    const currentHour = now.getHours();
+    let lastResult = "--";
+    const sessions = [
+        { id: "val-06pm", time: 18, result: "13" },
+        { id: "val-08pm", time: 20, result: "00" },
+        { id: "val-09pm", time: 21, result: "--" },
+        { id: "val-10pm", time: 22, result: "--" },
+        { id: "val-11pm", time: 23, result: "--" }
+    ];
+    sessions.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (el && currentHour >= s.time) {
+            el.innerText = s.result;
+            lastResult = s.result;
         }
-        setInterval(updateDisplay, 1000);
-        updateDisplay();
-    </script>
+    });
+    const mainEl = document.getElementById("main-live-result");
+    if (mainEl) mainEl.innerText = lastResult;
+}
+setInterval(updateDisplay, 1000);
+updateDisplay();
+</script>
+
 </body>
+</html>
