@@ -103,15 +103,18 @@ function updateDisplay() {
             if (clockEl) clockEl.innerText = now.toLocaleTimeString();
 
             const currentHour = now.getHours();
+                        let lastResult = "--";
             sessions.forEach(s => {
                 const el = document.getElementById(s.id);
                 if (el && currentHour >= s.time) {
                     el.innerText = s.result;
+                    lastResult = s.result;
                 }
             });
+            const mainEl = document.getElementById("main-live-result");
+            if (mainEl) mainEl.innerText = lastResult;
         }
         setInterval(updateDisplay, 1000);
         updateDisplay();
     </script>
 </body>
-</html>
