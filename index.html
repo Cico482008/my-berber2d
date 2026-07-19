@@ -13,6 +13,7 @@
 <!-- Live Result Section -->
 <div class="text-center py-6 border-b">
 <p class="text-red-500 font-bold animate-pulse">● LIVE</p>
+    <p id="main-live-result" class="text-4xl font-bold my-2">--</p>
 <div class="flex justify-around mt-4 text-gray-700">
 <div class="text-center">
 <p class="text-xs text-gray-500 underline">Set</p>
@@ -87,18 +88,16 @@ updateClock();
             <p>11:00 PM: <span id="val-11pm">--</span></p>
         </div>
     </div>
-
-    <!-- JavaScript ကို အောက်ဆုံးမှာ ထားပါ -->
+<!-- JavaScript ကို အောက်ဆုံးမှာ ထားပါ -->
     <script>
         const sessions = [
             { id: "val-06pm", time: 18, result: "13" },
-            { id: "val-08pm", time: 20, result: "--" },
+            { id: "val-08pm", time: 20, result: "00" },
             { id: "val-09pm", time: 21, result: "--" },
             { id: "val-10pm", time: 22, result: "--" },
             { id: "val-11pm", time: 23, result: "--" }
         ];
-
-        function updateDisplay() {
+function updateDisplay() {
             const now = new Date();
             const clockEl = document.getElementById("live-clock");
             if (clockEl) clockEl.innerText = now.toLocaleTimeString();
