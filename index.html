@@ -72,11 +72,11 @@ function updateDisplay() {
     const currentHour = now.getHours();
     let lastResult = "--";
     const sessions = [
-        { id: "val-06pm", time: 18, result: "--" },
-        { id: "val-08pm", time: 20, result: "--" },
-        { id: "val-09pm", time: 21, result: "--" },
-        { id: "val-10pm", time: 22, result: "--" },
-        { id: "val-11pm", time: 23, result: "--" }
+        { id: "val-06pm", time: 18, result: "54" },
+        { id: "val-08pm", time: 20, result: "73" },
+        { id: "val-09pm", time: 21, result: "28" },
+        { id: "val-10pm", time: 22, result: "12" },
+        { id: "val-11pm", time: 23, result: "77" }
     ];
     sessions.forEach(s => {
         const el = document.getElementById(s.id);
