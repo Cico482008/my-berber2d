@@ -70,24 +70,43 @@ function updateDisplay() {
     document.getElementById("current-date").innerText = now.toLocaleDateString();
 
     const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentSecond = now.getSeconds();
+    
+    const totalCurrentSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond;
+
     let lastResult = "--";
     const sessions = [
-        { id: "val-06pm", time: 18, result: "46" },
-        { id: "val-08pm", time: 20, result: "21" },
-        { id: "val-09pm", time: 21, result: "40" },
-        { id: "val-10pm", time: 22, result: "58" },
-        { id: "val-11pm", time: 23, result: "29" }
+        { id: "val-06pm", time: 18, minute: 0, result: "46" },
+        { id: "val-08pm", time: 20, minute: 0, result: "21" },
+        { id: "val-09pm", time: 21, minute: 0, result: "40" },
+        { id: "val-10pm", time: 22, minute: 0, result: "58" },
+        { id: "val-11pm", time: 23, minute: 0, result: "29" }
     ];
+
     sessions.forEach(s => {
         const el = document.getElementById(s.id);
-        if (el && currentHour >= s.time) {
+        if (!el) return;
+
+        const sessionTargetSeconds = s.time * 3600 + (s.minute || 0) * 60;
+        const preStartSeconds = sessionTargetSeconds - 1800; // မိနစ် ၃၀ အလို
+
+        if (totalCurrentSeconds >= sessionTargetSeconds) {
             el.innerText = s.result;
             lastResult = s.result;
+        } else if (totalCurrentSeconds >= preStartSeconds && totalCurrentSeconds < sessionTargetSeconds) {
+            const randomNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+            el.innerText = randomNum;
+            lastResult = randomNum;
+        } else {
+            el.innerText = "--";
         }
     });
+
     const mainEl = document.getElementById("main-live-result");
     if (mainEl) mainEl.innerText = lastResult;
 }
+
 setInterval(updateDisplay, 1000);
 updateDisplay();
 </script>
