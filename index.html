@@ -63,6 +63,13 @@
 </div>
 
 <script>
+let randomDisplayNum = "00";
+
+// ၂ စက္ကန့် သို့မဟုတ် ၃ စက္ကန့် တစ်ကြိမ် (ဥပမာ - ၃ စက္ကန့်လျှင် 3000) နံပါတ်ပြောင်းရန်
+setInterval(() => {
+    randomDisplayNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+}, 3000); 
+
 function updateDisplay() {
     const now = new Date();
     // Update Time
@@ -76,7 +83,7 @@ function updateDisplay() {
     
     const totalCurrentSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond;
 
-    let lastResult = "--";
+    let activeLiveResult = "--";
     const sessions = [
         { id: "val-06pm", time: 18, minute: 0, result: "46" },
         { id: "val-08pm", time: 20, minute: 0, result: "21" },
@@ -93,19 +100,41 @@ function updateDisplay() {
         const preStartSeconds = sessionTargetSeconds - 1800; // မိနစ် ၃၀ အလို
 
         if (totalCurrentSeconds >= sessionTargetSeconds) {
+            // အချိန်ရောက်ပြီဆိုမှ History မှာ တကယ့် Result ပေါ်မယ်
             el.innerText = s.result;
-            lastResult = s.result;
+            activeLiveResult = s.result;
         } else if (totalCurrentSeconds >= preStartSeconds && totalCurrentSeconds < sessionTargetSeconds) {
-            const randomNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
-            el.innerText = randomNum;
-            lastResult = randomNum;
+            // မိနစ် ၃၀ အလိုမှ အချိန်မရောက်မချင်း History မှာ ဘာမှမပြဘဲ '--' ပဲပြမယ် (သို့မဟုတ် လိုချင်ရင် ဒီမှာပြလို့ရပါတယ်)
+            el.innerText = "--";
+            // အပေါ်ဆုံး LIVE မှာတော့ ၃ စက္ကန့်တစ်ခါ ပြောင်းနေတဲ့ ကျပန်းနံပါတ်ကို ပြမယ်
+            activeLiveResult = randomDisplayNum;
         } else {
             el.innerText = "--";
         }
     });
 
     const mainEl = document.getElementById("main-live-result");
-    if (mainEl) mainEl.innerText = lastResult;
+    if (mainEl) {
+        // အကယ်၍ လက်ရှိအချိန်က Session တစ်ခုခုရဲ့ မိနစ် ၃၀ အလိုအတွင်း သို့မဟုတ် ပြီးဆုံးသွားချိန်ဖြစ်မှ LIVE မှာပြမယ်
+        let isAnySessionActive = sessions.some(s => {
+            let target = s.time * 3600;
+            return totalCurrentSeconds >= (target - 1800);
+        });
+
+        if (isAnySessionActive) {
+            // အချိန်ရောက်ပြီးသားဆိုရင် နောက်ဆုံးထွက်ထားတဲ့ Result ကိုပြမယ်၊ မရောက်သေးရင် ၃ စက္ကန့်တစ်ခါပြောင်းတဲ့နံပါတ်ပြမယ်
+            let latestResult = "--";
+            for (let s of sessions) {
+                let target = s.time * 3600;
+                if (totalCurrentSeconds >= target) {
+                    latestResult = s.result;
+                }
+            }
+            mainEl.innerText = (latestResult !== "--") ? latestResult : randomDisplayNum;
+        } else {
+            mainEl.innerText = "--";
+        }
+    }
 }
 
 setInterval(updateDisplay, 1000);
