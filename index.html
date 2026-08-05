@@ -65,6 +65,7 @@
 <script>
 let randomDisplayNum = "00";
 
+// ၃ စက္ကန့်တစ်ခါ ကျပန်းနံပါတ်ပြောင်းရန်
 setInterval(() => {
     randomDisplayNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
 }, 3000); 
@@ -88,6 +89,7 @@ function updateDisplay() {
         { id: "val-11pm", time: 23, minute: 0, result: "39" }
     ];
 
+    // History ဇယားကွက်များအတွက် အချိန်ရောက်မှ result ပြရန်
     sessions.forEach(s => {
         const el = document.getElementById(s.id);
         if (!el) return;
@@ -101,25 +103,31 @@ function updateDisplay() {
         }
     });
 
+    // Main LIVE Result အတွက် Logic အသစ်
     const mainEl = document.getElementById("main-live-result");
     if (mainEl) {
-        let isAnySessionActive = sessions.some(s => {
-            let target = s.time * 3600;
-            return totalCurrentSeconds >= (target - 1800);
-        });
+        let activeOutput = "--";
+        let foundActiveSession = false;
 
-        if (isAnySessionActive) {
-            let latestResult = "--";
-            for (let s of sessions) {
-                let target = s.time * 3600;
-                if (totalCurrentSeconds >= target) {
-                    latestResult = s.result;
-                }
+        for (let i = 0; i < sessions.length; i++) {
+            let s = sessions[i];
+            let targetSec = s.time * 3600;
+            let preStartSec = targetSec - 1800; // မိနစ် ၃၀ အလို
+
+            // အကယ်၍ လက်ရှိအချိန်သည် မိနစ် ၃၀ အလိုမှစ၍ အချိန်အတိအကျမရောက်သေးသောကာလအတွင်း ရှိနေလျှင်
+            if (totalCurrentSeconds >= preStartSec && totalCurrentSeconds < targetSec) {
+                activeOutput = randomDisplayNum; // ကျပန်းနံပါတ်ပြမည်
+                foundActiveSession = true;
+                break;
             }
-            mainEl.innerText = (latestResult !== "--") ? latestResult : randomDisplayNum;
-        } else {
-            mainEl.innerText = "--";
+            // အကယ်၍ အချိန်ရောက်သွားပြီးပါက (သို့မဟုတ် ကျော်သွားပြီး နောက် session ရဲ့ မိနစ် ၃၀ အလိုမရောက်သေးလျှင်)
+            else if (totalCurrentSeconds >= targetSec) {
+                activeOutput = s.result; // တကယ့် Result ကိုပြမည်
+                foundActiveSession = true;
+            }
         }
+
+        mainEl.innerText = activeOutput;
     }
 }
 
