@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 m-0 p-0">
+
+    <div class="w-full bg-white shadow-lg min-h-screen">
+    <!-- Header -->
+    <div class="bg-purple-600 p-4 text-white flex justify-between items-center">
+        <h1 class="font-bold text-lg">BerBer 2D</h1>
+        <div class="flex gap-4"><span>🎁</span><span>🗓️</span></div>
+    </div>
+
+    <!-- Live Result Section -->
+    <div class="text-center py-6 border-b">
+        <p class="text-red-500 font-bold animate-pulse">● LIVE</p>
+        <!-- Main Result နှင့် အမှန်ခြစ်ပေါ်မည့်နေရာ -->
+        <div class="flex justify-center items-center gap-2 my-2">
+            <span id="main-live-result" class="text-6xl font-bold">--</span>
+            <span id="main-check-icon" class="text-3xl text-green-500 hidden">✅</span>
+        </div>
+        
+        <!-- Date and Set/Value Section -->
+        <div class="grid grid-cols-3 gap-2 mt-4 px-2 text-gray-700">
+            <div class="text-center">
+                <p class="text-[10px] text-gray-400 underline">Set</p>
+                <p class="font-bold text-sm">12345.56</p>
+            </div>
+            <div class="text-center">
+                <p class="text-[10px] text-gray-400 underline">Time</p>
+                <p id="live-clock" class="font-bold text-sm">00:00:00</p>
+            </div>
+            <div class="text-center">
+                <p class="text-[10px] text-gray-400 underline">Value</p>
+                <p class="font-bold text-sm">12345.56</p>
+            </div>
+        </div>
+        <p class="text-xs text-gray-400 mt-2" id="current-date"></p>
+    </div>
+
+    <!-- History Section -->
+    <div class="flex flex-col gap-2 px-4 mt-6 pb-6">
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">06:00 PM</span>
+            <span id="val-06pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">08:00 PM</span>
+            <span id="val-08pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">09:00 PM</span>
+            <span id="val-09pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">10:00 PM</span>
+            <span id="val-10pm" class="font-bold text-lg">--</span>
+        </div>
+        <div class="bg-purple-100 p-3 rounded-lg flex justify-between items-center">
+            <span class="font-bold text-sm">11:00 PM</span>
+            <span id="val-11pm" class="font-bold text-lg">--</span>
+        </div>
+    </div>
+</div>
+
+<script>
+let randomDisplayNum = "00";
+
+// ၃ စက္ကန့်တစ်ခါ ကျပန်းနံပါတ်ပြောင်းရန်
+setInterval(() => {
+    randomDisplayNum = String(Math.floor(Math.random() * 100)).padStart(2, '0');
+}, 3000); 
+
+function updateDisplay() {
+    const now = new Date();
+    document.getElementById("live-clock").innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    document.getElementById("current-date").innerText = now.toLocaleDateString();
+
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const currentSecond = now.getSeconds();
+    
+    const totalCurrentSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond;
+
+    const sessions = [
+        { id: "val-06pm", time: 18, minute: 0, result: "90" },
+        { id: "val-08pm", time: 20, minute: 0, result: "37" },
+        { id: "val-09pm", time: 21, minute: 0, result: "51" },
+        { id: "val-10pm", time: 22, minute: 0, result: "58" },
+        { id: "val-11pm", time: 23, minute: 0, result: "39" }
+    ];
+
+    // History ဇယားကွက်များအတွက် အချိန်ရောက်မှ result ပြရန်
+    sessions.forEach(s => {
+        const el = document.getElementById(s.id);
+        if (!el) return;
+
+        const sessionTargetSeconds = s.time * 3600 + (s.minute || 0) * 60;
+
+        if (totalCurrentSeconds >= sessionTargetSeconds) {
+            el.innerText = s.result;
+        } else {
+            el.innerText = "--";
+        }
+    });
+
+    // Main LIVE Result နှင့် အမှန်ခြစ် (✅) ပေါ်ရန် Logic
+    const mainEl = document.getElementById("main-live-result");
+    const checkIconEl = document.getElementById("main-check-icon");
+
+    if (mainEl && checkIconEl) {
+        let activeOutput = "--";
+        let isFinalResult = false;
+
+        for (let i = 0; i < sessions.length; i++) {
+            let s = sessions[i];
+            let targetSec = s.time * 3600;
+            let preStartSec = targetSec - 1800; // မိနစ် ၃၀ အလို
+
+            if (totalCurrentSeconds >= preStartSec && totalCurrentSeconds < targetSec) {
+                activeOutput = randomDisplayNum; // မိနစ် ၃၀ အတွင်း ကျပန်းနံပါတ်ပြမည်
+                isFinalResult = false;
+                break;
+            } else if (totalCurrentSeconds >= targetSec) {
+                activeOutput = s.result; // အချိန်ရောက်လျှင် တကယ့် Result ပြမည်
+                isFinalResult = true;
+            }
+        }
+
+        mainEl.innerText = activeOutput;
+
+        // တကယ့် Result ထွက်နေချိန် (အချိန်ရောက်သွားချိန်) တွင်သာ အမှန်ခြစ်ပေါ်မည်၊ ကျပန်းပြနေချိန်တွင် ဖျောက်ထားမည်
+        if (isFinalResult && activeOutput !== "--") {
+            checkIconEl.classList.remove("hidden");
+        } else {
+            checkIconEl.classList.add("hidden");
+        }
+    }
+}
+
+setInterval(updateDisplay, 1000);
+updateDisplay();
+</script>
+
+</body>
+</html>
