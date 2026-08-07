@@ -82,11 +82,11 @@ function updateDisplay() {
     const totalCurrentSeconds = currentHour * 3600 + currentMinute * 60 + currentSecond;
 
     const sessions = [
-        { id: "val-06pm", time: 18, minute: 0, result: "90" },
-        { id: "val-08pm", time: 20, minute: 0, result: "99" },
-        { id: "val-09pm", time: 21, minute: 0, result: "12" },
-        { id: "val-10pm", time: 22, minute: 0, result: "33" },
-        { id: "val-11pm", time: 23, minute: 0, result: "18" }
+        { id: "val-06pm", time: 18, minute: 0, result: "11" },
+        { id: "val-08pm", time: 20, minute: 0, result: "86" },
+        { id: "val-09pm", time: 21, minute: 0, result: "38" },
+        { id: "val-10pm", time: 22, minute: 0, result: "71" },
+        { id: "val-11pm", time: 23, minute: 0, result: "93" }
     ];
 
     // History ဇယားကွက်များအတွက် အချိန်ရောက်မှ result ပြရန်
